@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "dgSpecHash": "tMq15mRFXwcY7DyAon2GBbbMgs9whIr74jkgaEDfXxU43mOwuJvu02Dz2EcpVZnCpM4Pki/UvDAhyL/+5HbDsw==",
+  "success": true,
+  "projectFilePath": "C:\\Users\\mutig\\Desktop\\sas\\Учеба\\8 СЕМЕСТР\\КМЗИ\\лабы\\CryptoLab4\\CryptoLab4\\CryptoLab4.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\mutig\\.nuget\\packages\\microsoft.netcore.app.host.win-x64\\5.0.13\\microsoft.netcore.app.host.win-x64.5.0.13.nupkg.sha512",
+    "C:\\Users\\mutig\\.nuget\\packages\\microsoft.aspnetcore.app.ref\\5.0.0\\microsoft.aspnetcore.app.ref.5.0.0.nupkg.sha512",
+    "C:\\Users\\mutig\\.nuget\\packages\\microsoft.windowsdesktop.app.ref\\5.0.0\\microsoft.windowsdesktop.app.ref.5.0.0.nupkg.sha512",
+    "C:\\Users\\mutig\\.nuget\\packages\\microsoft.netcore.app.ref\\5.0.0\\microsoft.netcore.app.ref.5.0.0.nupkg.sha512"
+  ],
+  "logs": []
+}
