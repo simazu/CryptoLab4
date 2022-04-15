@@ -37,7 +37,9 @@ namespace CryptoLab4.Lib
         /// </summary>
         private long count;
 
-        private bool doSecondRound = true, doThirdRound = true;
+        private bool doSecondRound, doThirdRound;
+
+        private uint A, B, C, D;
 
         // Constructors
         //------------------------------------------------------------------------
@@ -46,7 +48,11 @@ namespace CryptoLab4.Lib
         {
             this.doSecondRound = doSecondRound;
             this.doThirdRound = doThirdRound;
-            EngineReset(a, b, c, d);
+            A = a;
+            B = b;
+            C = c;
+            D = d;
+            EngineReset();
         }
 
         /// <summary>
@@ -59,6 +65,8 @@ namespace CryptoLab4.Lib
             context = (uint[])md.context.Clone();
             buffer = (byte[])md.buffer.Clone();
             count = md.count;
+            doThirdRound = md.doThirdRound;
+            doSecondRound = md.doSecondRound;
         }
 
         // Clonable method implementation
@@ -75,14 +83,14 @@ namespace CryptoLab4.Lib
         ///   Resets this object disregarding any temporary data present at the
         ///   time of the invocation of this call.
         /// </summary>
-        private void EngineReset(uint a = 0x67452301, uint b = 0xEFCDAB89, uint c = 0x98BADCFE, uint d = 0x10325476)
+        private void EngineReset()
         {
             // initial values of MD4 i.e. A, B, C, D
             // as per rfc-1320; they are low-order byte first
-            context[0] = a;
-            context[1] = b;
-            context[2] = c;
-            context[3] = d;
+            context[0] = A;
+            context[1] = B;
+            context[2] = C;
+            context[3] = D;
             count = 0L;
             for (int i = 0; i < BLOCK_LENGTH; i++)
                 buffer[i] = 0;
@@ -198,7 +206,7 @@ namespace CryptoLab4.Lib
         /// <returns>binary hash of input</returns>
         public byte[] GetByteHashFromBytes(byte[] b)
         {
-            var md4 = new MD4();
+            var md4 = this;
 
             md4.EngineUpdate(b, 0, b.Length);
 

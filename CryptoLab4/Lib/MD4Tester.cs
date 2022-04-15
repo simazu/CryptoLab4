@@ -16,8 +16,8 @@ namespace CryptoLab4.Lib
                                                             uint C = 0x98badcfe, uint D = 0x10325476)
         {
             byte[] message = Converter.FileToBytes(fileName);
-            int[] numMessageChangedBits = new int[message.Length];
-            int[] numHashChangedBits = new int[message.Length];
+            int[] numMessageChangedBits = new int[message.Length * 8];
+            int[] numHashChangedBits = new int[message.Length * 8];
             MD4 md4 = new MD4(doSecondRound, doThirdRound, A, B, C, D);
             byte[] originalHash = md4.GetByteHashFromBytes(message);
             for (int bitNdx = 0; bitNdx < message.Length * 8; bitNdx++)
@@ -28,12 +28,17 @@ namespace CryptoLab4.Lib
                     changedMessage[j] = (byte)~changedMessage[j];
                 for (int j = 0; j < bitNdx % 8; j++)
                     changedMessage[bitNdx / 8] = (byte)(changedMessage[bitNdx / 8]^(1 << (7 - j)));
+
                 byte[] changedHash = md4.GetByteHashFromBytes(changedMessage);
 
                 for (int i = 0;i < originalHash.Length; i++)
                 {
                     for (int j = 0; j < 8; j++)
-                        numHashChangedBits[i] += (originalHash[i] ^ changedHash[i]) >> j == 1 ? 1 : 0;
+                    {
+                        byte hashDifference = (byte)(originalHash[i] ^ changedHash[i]);
+                        byte hashDifferencej = (byte)((hashDifference >> j) & 1);
+                        numHashChangedBits[bitNdx] += (hashDifferencej == 1 ? 1 : 0);
+                    }
                 }
             }
             return (numMessageChangedBits, numHashChangedBits);
@@ -48,7 +53,7 @@ namespace CryptoLab4.Lib
             Dictionary<uint, string> messageShortHashes = new Dictionary<uint, string>();
             string message;
             MD4 md4 = new MD4();
-            int k = numHashBits - 1;
+
             while (true)
             {
                 numGeneratedMessages++;
@@ -62,7 +67,6 @@ namespace CryptoLab4.Lib
                     shortHash[numHashBits / 8] = (byte)(hash[numHashBits / 8] & (1 << (7 - j)));
 
                 uint a = BitConverter.ToUInt32(shortHash);
-                bool test = messageShortHashes.Keys.Contains(a);
                 if (messageShortHashes.Keys.Contains(a))
                 {
                     collision = (messageShortHashes[a], message);
@@ -83,8 +87,6 @@ namespace CryptoLab4.Lib
             string[] collisionHashes = new string[32];
             int[] numGeneratedMessages = new int[32];
 
-            Random random = new Random();
-            MD4 md4 = new MD4();
             for (int k = 0; k < 32; k++)
             {
                 ((string, string) collision, string hash, int numGenerated) = FindCollision(messageLengthInBytes, k + 1);
@@ -101,10 +103,10 @@ namespace CryptoLab4.Lib
             string prototype;
             int numGeneratedMessages = 0;
 
+            Random random = new Random();
             MD4 md4 = new MD4();
             byte[] hash = md4.GetByteHashFromString(message);
             byte[] shortOriginalHash = new byte[4];
-            int k = numHashBits - 1;
 
             for (int j = 0; j < numHashBits / 8; j++)
                 shortOriginalHash[j] = hash[j];
@@ -114,7 +116,7 @@ namespace CryptoLab4.Lib
             while (true)
             {
                 numGeneratedMessages++;
-                string randomMessage = RandomString(Encoding.UTF8.GetByteCount(message));
+                string randomMessage = RandomString(random.Next(100));
                 byte[] randomsHash = md4.GetByteHashFromString(randomMessage);
 
                 byte[] shortRandomsHash = new byte[4];
@@ -123,7 +125,9 @@ namespace CryptoLab4.Lib
                 for (int j = 0; j < numHashBits % 8; j++)
                     shortRandomsHash[numHashBits / 8] = (byte)(randomsHash[numHashBits / 8] & (1 << (7 - j)));
 
-                if (BitConverter.ToUInt32(shortOriginalHash) == BitConverter.ToUInt32(shortRandomsHash))
+                uint a = BitConverter.ToUInt32(shortOriginalHash);
+                uint b = BitConverter.ToUInt32(shortRandomsHash);
+                if (a == b)
                 {
                     prototype = randomMessage;
                     return (prototype, md4.GetHexHashFromString(randomMessage), numGeneratedMessages);
