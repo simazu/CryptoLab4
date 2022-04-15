@@ -16,8 +16,8 @@ namespace CryptoLab4.Lib
                                                             uint C = 0x98badcfe, uint D = 0x10325476)
         {
             byte[] message = Converter.FileToBytes(fileName);
-            int[] numMessageChangedBits = new int[message.Length];
-            int[] numHashChangedBits = new int[message.Length];
+            int[] numMessageChangedBits = new int[message.Length * 8];
+            int[] numHashChangedBits = new int[message.Length * 8];
             MD4 md4 = new MD4(doSecondRound, doThirdRound, A, B, C, D);
             byte[] originalHash = md4.GetByteHashFromBytes(message);
             for (int bitNdx = 0; bitNdx < message.Length * 8; bitNdx++)
@@ -33,7 +33,7 @@ namespace CryptoLab4.Lib
                 for (int i = 0;i < originalHash.Length; i++)
                 {
                     for (int j = 0; j < 8; j++)
-                        numHashChangedBits[i] += (originalHash[i] ^ changedHash[i]) >> j == 1 ? 1 : 0;
+                        numHashChangedBits[bitNdx] += (originalHash[i] ^ changedHash[i]) >> j == 1 ? 1 : 0;
                 }
             }
             return (numMessageChangedBits, numHashChangedBits);
@@ -62,7 +62,7 @@ namespace CryptoLab4.Lib
                     shortHash[numHashBits / 8] = (byte)(hash[numHashBits / 8] & (1 << (7 - j)));
 
                 uint a = BitConverter.ToUInt32(shortHash);
-                bool test = messageShortHashes.Keys.Contains(a);
+
                 if (messageShortHashes.Keys.Contains(a))
                 {
                     collision = (messageShortHashes[a], message);
@@ -83,8 +83,6 @@ namespace CryptoLab4.Lib
             string[] collisionHashes = new string[32];
             int[] numGeneratedMessages = new int[32];
 
-            Random random = new Random();
-            MD4 md4 = new MD4();
             for (int k = 0; k < 32; k++)
             {
                 ((string, string) collision, string hash, int numGenerated) = FindCollision(messageLengthInBytes, k + 1);
@@ -148,12 +146,13 @@ namespace CryptoLab4.Lib
             return (numHashBits, prototypes, numGeneratedMessages);
         }
 
-        public static (int[], TimeSpan[]) HashingTimeFromMessageLength()
+        public static (int[], int[]) HashingTimeFromMessageLength()
         {
-            int numSamples = 10;
+            int numSamples = 50;
             int[] messageLengthInBits = new int[numSamples];
-            TimeSpan[] hashingTimes = new TimeSpan[numSamples];
+            int[] hashingTimes = new int[numSamples];
             Stopwatch watch = new Stopwatch();
+            watch.Start();
             MD4 md4 = new MD4();
             byte[] message = Converter.FileToBytes(fileName);
             for (int i = 0; i < numSamples; i++)
@@ -165,8 +164,8 @@ namespace CryptoLab4.Lib
                 watch.Restart();
                 md4.GetByteHashFromBytes(shortMessage);
                 watch.Stop();
+                hashingTimes[i] = (int)watch.Elapsed.Ticks;
                 messageLengthInBits[i] = shortMessage.Length * 8;
-                hashingTimes[i] = watch.Elapsed;
             }
             return (messageLengthInBits, hashingTimes);
         }

@@ -217,7 +217,7 @@ namespace CryptoLab4
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.White;
-            this.ClientSize = new System.Drawing.Size(695, 289);
+            this.ClientSize = new System.Drawing.Size(694, 289);
             this.Controls.Add(this.panel1);
             this.Controls.Add(this.sequencePanel);
             this.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);

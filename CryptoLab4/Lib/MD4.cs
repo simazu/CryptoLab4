@@ -184,7 +184,7 @@ namespace CryptoLab4.Lib
         public byte[] GetByteHashFromString(string s)
         {
             byte[] b = Encoding.UTF8.GetBytes(s);
-            var md4 = new MD4();
+            MD4 md4 = new MD4();
 
             md4.EngineUpdate(b, 0, b.Length);
 
