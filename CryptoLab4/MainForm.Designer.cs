@@ -30,6 +30,9 @@ namespace CryptoLab4
         private void InitializeComponent()
         {
             this.sequencePanel = new System.Windows.Forms.Panel();
+            this.label3 = new System.Windows.Forms.Label();
+            this.label1 = new System.Windows.Forms.Label();
+            this.inputRichTextBox = new System.Windows.Forms.RichTextBox();
             this.label2 = new System.Windows.Forms.Label();
             this.findPrototypeButton = new System.Windows.Forms.Button();
             this.findCollisionButton = new System.Windows.Forms.Button();
@@ -38,7 +41,7 @@ namespace CryptoLab4
             this.messageLengthNumericUpDown = new System.Windows.Forms.NumericUpDown();
             this.hashLengthNumericUpDown = new System.Windows.Forms.NumericUpDown();
             this.ioLabel = new System.Windows.Forms.Label();
-            this.ioRichTextBox = new System.Windows.Forms.RichTextBox();
+            this.outputRichTextBox = new System.Windows.Forms.RichTextBox();
             this.getHashButton = new System.Windows.Forms.Button();
             this.chartComboBox = new System.Windows.Forms.ComboBox();
             this.plotButton = new System.Windows.Forms.Button();
@@ -53,6 +56,9 @@ namespace CryptoLab4
             // sequencePanel
             // 
             this.sequencePanel.BackColor = System.Drawing.Color.Gainsboro;
+            this.sequencePanel.Controls.Add(this.label3);
+            this.sequencePanel.Controls.Add(this.label1);
+            this.sequencePanel.Controls.Add(this.inputRichTextBox);
             this.sequencePanel.Controls.Add(this.label2);
             this.sequencePanel.Controls.Add(this.findPrototypeButton);
             this.sequencePanel.Controls.Add(this.findCollisionButton);
@@ -61,18 +67,45 @@ namespace CryptoLab4
             this.sequencePanel.Controls.Add(this.messageLengthNumericUpDown);
             this.sequencePanel.Controls.Add(this.hashLengthNumericUpDown);
             this.sequencePanel.Controls.Add(this.ioLabel);
-            this.sequencePanel.Controls.Add(this.ioRichTextBox);
+            this.sequencePanel.Controls.Add(this.outputRichTextBox);
             this.sequencePanel.Controls.Add(this.getHashButton);
-            this.sequencePanel.Location = new System.Drawing.Point(10, 9);
+            this.sequencePanel.Location = new System.Drawing.Point(0, 11);
             this.sequencePanel.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.sequencePanel.Name = "sequencePanel";
-            this.sequencePanel.Size = new System.Drawing.Size(331, 271);
+            this.sequencePanel.Size = new System.Drawing.Size(343, 578);
             this.sequencePanel.TabIndex = 1;
+            // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Location = new System.Drawing.Point(169, 552);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(93, 15);
+            this.label3.TabIndex = 8;
+            this.label3.Text = "Message length:";
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(4, 0);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(35, 15);
+            this.label1.TabIndex = 13;
+            this.label1.Text = "Input";
+            // 
+            // inputRichTextBox
+            // 
+            this.inputRichTextBox.Location = new System.Drawing.Point(3, 17);
+            this.inputRichTextBox.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.inputRichTextBox.Name = "inputRichTextBox";
+            this.inputRichTextBox.Size = new System.Drawing.Size(326, 236);
+            this.inputRichTextBox.TabIndex = 12;
+            this.inputRichTextBox.Text = "";
             // 
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(293, 247);
+            this.label2.Location = new System.Drawing.Point(305, 552);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(35, 15);
             this.label2.TabIndex = 11;
@@ -80,7 +113,7 @@ namespace CryptoLab4
             // 
             // findPrototypeButton
             // 
-            this.findPrototypeButton.Location = new System.Drawing.Point(230, 221);
+            this.findPrototypeButton.Location = new System.Drawing.Point(233, 526);
             this.findPrototypeButton.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.findPrototypeButton.Name = "findPrototypeButton";
             this.findPrototypeButton.Size = new System.Drawing.Size(98, 22);
@@ -91,7 +124,7 @@ namespace CryptoLab4
             // 
             // findCollisionButton
             // 
-            this.findCollisionButton.Location = new System.Drawing.Point(116, 221);
+            this.findCollisionButton.Location = new System.Drawing.Point(119, 526);
             this.findCollisionButton.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.findCollisionButton.Name = "findCollisionButton";
             this.findCollisionButton.Size = new System.Drawing.Size(98, 22);
@@ -103,16 +136,16 @@ namespace CryptoLab4
             // messageLengthLabel
             // 
             this.messageLengthLabel.AutoSize = true;
-            this.messageLengthLabel.Location = new System.Drawing.Point(128, 247);
+            this.messageLengthLabel.Location = new System.Drawing.Point(131, 552);
             this.messageLengthLabel.Name = "messageLengthLabel";
-            this.messageLengthLabel.Size = new System.Drawing.Size(115, 15);
+            this.messageLengthLabel.Size = new System.Drawing.Size(32, 15);
             this.messageLengthLabel.TabIndex = 7;
-            this.messageLengthLabel.Text = "bits.Message length:";
+            this.messageLengthLabel.Text = "bits. ";
             // 
             // hashLengthLabel
             // 
             this.hashLengthLabel.AutoSize = true;
-            this.hashLengthLabel.Location = new System.Drawing.Point(3, 247);
+            this.hashLengthLabel.Location = new System.Drawing.Point(7, 552);
             this.hashLengthLabel.Name = "hashLengthLabel";
             this.hashLengthLabel.Size = new System.Drawing.Size(74, 15);
             this.hashLengthLabel.TabIndex = 6;
@@ -120,14 +153,14 @@ namespace CryptoLab4
             // 
             // messageLengthNumericUpDown
             // 
-            this.messageLengthNumericUpDown.Location = new System.Drawing.Point(249, 245);
+            this.messageLengthNumericUpDown.Location = new System.Drawing.Point(264, 550);
             this.messageLengthNumericUpDown.Name = "messageLengthNumericUpDown";
             this.messageLengthNumericUpDown.Size = new System.Drawing.Size(39, 23);
             this.messageLengthNumericUpDown.TabIndex = 5;
             // 
             // hashLengthNumericUpDown
             // 
-            this.hashLengthNumericUpDown.Location = new System.Drawing.Point(83, 245);
+            this.hashLengthNumericUpDown.Location = new System.Drawing.Point(86, 550);
             this.hashLengthNumericUpDown.Maximum = new decimal(new int[] {
             32,
             0,
@@ -140,24 +173,24 @@ namespace CryptoLab4
             // ioLabel
             // 
             this.ioLabel.AutoSize = true;
-            this.ioLabel.Location = new System.Drawing.Point(3, 2);
+            this.ioLabel.Location = new System.Drawing.Point(3, 255);
             this.ioLabel.Name = "ioLabel";
-            this.ioLabel.Size = new System.Drawing.Size(78, 15);
+            this.ioLabel.Size = new System.Drawing.Size(45, 15);
             this.ioLabel.TabIndex = 3;
-            this.ioLabel.Text = "Input/Output";
+            this.ioLabel.Text = "Output";
             // 
-            // ioRichTextBox
+            // outputRichTextBox
             // 
-            this.ioRichTextBox.Location = new System.Drawing.Point(2, 19);
-            this.ioRichTextBox.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.ioRichTextBox.Name = "ioRichTextBox";
-            this.ioRichTextBox.Size = new System.Drawing.Size(326, 198);
-            this.ioRichTextBox.TabIndex = 0;
-            this.ioRichTextBox.Text = "";
+            this.outputRichTextBox.Location = new System.Drawing.Point(0, 272);
+            this.outputRichTextBox.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.outputRichTextBox.Name = "outputRichTextBox";
+            this.outputRichTextBox.Size = new System.Drawing.Size(326, 250);
+            this.outputRichTextBox.TabIndex = 0;
+            this.outputRichTextBox.Text = "";
             // 
             // getHashButton
             // 
-            this.getHashButton.Location = new System.Drawing.Point(3, 221);
+            this.getHashButton.Location = new System.Drawing.Point(6, 526);
             this.getHashButton.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.getHashButton.Name = "getHashButton";
             this.getHashButton.Size = new System.Drawing.Size(98, 22);
@@ -175,14 +208,14 @@ namespace CryptoLab4
             "Collision search from hash length",
             "Prototype search from hash length",
             "Hashing time from message length"});
-            this.chartComboBox.Location = new System.Drawing.Point(3, 245);
+            this.chartComboBox.Location = new System.Drawing.Point(3, 550);
             this.chartComboBox.Name = "chartComboBox";
             this.chartComboBox.Size = new System.Drawing.Size(282, 23);
             this.chartComboBox.TabIndex = 6;
             // 
             // plotButton
             // 
-            this.plotButton.Location = new System.Drawing.Point(291, 246);
+            this.plotButton.Location = new System.Drawing.Point(291, 551);
             this.plotButton.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.plotButton.Name = "plotButton";
             this.plotButton.Size = new System.Drawing.Size(38, 22);
@@ -194,7 +227,7 @@ namespace CryptoLab4
             // settingsLabel
             // 
             this.settingsLabel.AutoSize = true;
-            this.settingsLabel.Location = new System.Drawing.Point(3, 224);
+            this.settingsLabel.Location = new System.Drawing.Point(3, 531);
             this.settingsLabel.Name = "settingsLabel";
             this.settingsLabel.Size = new System.Drawing.Size(118, 15);
             this.settingsLabel.TabIndex = 2;
@@ -209,7 +242,7 @@ namespace CryptoLab4
             this.panel1.Location = new System.Drawing.Point(354, 10);
             this.panel1.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(331, 271);
+            this.panel1.Size = new System.Drawing.Size(1052, 579);
             this.panel1.TabIndex = 2;
             // 
             // MainForm
@@ -217,7 +250,7 @@ namespace CryptoLab4
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.White;
-            this.ClientSize = new System.Drawing.Size(694, 289);
+            this.ClientSize = new System.Drawing.Size(1136, 593);
             this.Controls.Add(this.panel1);
             this.Controls.Add(this.sequencePanel);
             this.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
@@ -237,7 +270,7 @@ namespace CryptoLab4
         private System.Windows.Forms.Panel sequencePanel;
         private System.Windows.Forms.Label settingsLabel;
         private System.Windows.Forms.Panel panel1;
-        private System.Windows.Forms.RichTextBox ioRichTextBox;
+        private System.Windows.Forms.RichTextBox outputRichTextBox;
         private System.Windows.Forms.Button getHashButton;
         private System.Windows.Forms.ComboBox chartComboBox;
         private System.Windows.Forms.Button plotButton;
@@ -249,6 +282,9 @@ namespace CryptoLab4
         private System.Windows.Forms.NumericUpDown messageLengthNumericUpDown;
         private System.Windows.Forms.NumericUpDown hashLengthNumericUpDown;
         private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.RichTextBox inputRichTextBox;
+        private System.Windows.Forms.Label label3;
     }
 }
 

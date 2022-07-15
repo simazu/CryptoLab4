@@ -1,25 +1,17 @@
 ﻿using CryptoLab4.Lib;
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Data;
 using System.Drawing;
-using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
-using System.Numerics;
 using System.Windows.Forms.DataVisualization.Charting;
-using Syncfusion;
 
 namespace CryptoLab4
 {
 
     public partial class MainForm : Form
     {
-        private System.Windows.Forms.DataVisualization.Charting.Chart chart;
+        private Chart chart;
 
         public MainForm()
         {
@@ -29,18 +21,18 @@ namespace CryptoLab4
 
         private void getHashButton_Click(object sender, EventArgs e)
         {
-            string message = ioRichTextBox.Text;
-            MD4 md4 = new MD4();
-            ioRichTextBox.Text += "\n\nMD4: " + md4.GetHexHashFromString(message);
+            MD4 md4 = new ();
+            outputRichTextBox.Clear();
+            outputRichTextBox.Text += "MD4: " + md4.GetHexHashFromString(inputRichTextBox.Text);
         }
 
         private void InitChart()
         {
-            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea1 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
-            System.Windows.Forms.DataVisualization.Charting.Legend legend1 = new System.Windows.Forms.DataVisualization.Charting.Legend();
-            System.Windows.Forms.DataVisualization.Charting.Series series1 = new System.Windows.Forms.DataVisualization.Charting.Series();
-            this.chart = new System.Windows.Forms.DataVisualization.Charting.Chart();
-            ((System.ComponentModel.ISupportInitialize)(this.chart)).BeginInit();
+            ChartArea chartArea1 = new ();
+            Legend legend1 = new ();
+            Series series1 = new ();
+            this.chart = new ();
+            ((ISupportInitialize)(this.chart)).BeginInit();
             this.panel1.Controls.Add(this.chart);
 
 
@@ -48,11 +40,12 @@ namespace CryptoLab4
             this.chart.ChartAreas.Add(chartArea1);
             this.chart.Location = new System.Drawing.Point(3, 15);
             this.chart.Name = "chart1";
+            this.chart.Legends.Add(legend1);
             series1.ChartArea = "ChartArea1";
-            series1.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Line;
+            series1.ChartType = SeriesChartType.Line;
             series1.Name = "Series1";
             this.chart.Series.Add(series1);
-            this.chart.Size = new System.Drawing.Size(310, 172);
+            this.chart.Size = new Size(700, 500);
             this.chart.TabIndex = 3;
             this.chart.Text = "chart1";
         }
@@ -65,23 +58,34 @@ namespace CryptoLab4
             {
                 case 0:
                     {
-                        Series series = chart.Series.Add("Avalance");
+                        Series series = chart.Series.Add("Avalanche one round");
+                        series.ChartType = SeriesChartType.Line;
+                        Series series1 = chart.Series.Add("Avalanche tho rounds");
+                        series1.ChartType = SeriesChartType.Line;
+                        Series series2 = chart.Series.Add("Avalanche three rounds");
+                        series2.ChartType = SeriesChartType.Line;
+
                         series.ChartType = SeriesChartType.Line;
 
                         (int[], int[]) oneRoundAvalancheEffectResult = MD4Tester.AvalancheEffectTest(false, false);
                         (int[], int[]) twoRoundAvalancheEffectResult = MD4Tester.AvalancheEffectTest(true, false);
                         (int[], int[]) threeRoundAvalancheEffectResult = MD4Tester.AvalancheEffectTest();
 
+
                         for (int i = 0; i < oneRoundAvalancheEffectResult.Item1.Length; i++)
                         {
                             series.Points.AddXY(oneRoundAvalancheEffectResult.Item1[i], oneRoundAvalancheEffectResult.Item2[i]);
+                            series1.Points.AddXY(twoRoundAvalancheEffectResult.Item1[i], twoRoundAvalancheEffectResult.Item2[i]);
+                            series2.Points.AddXY(threeRoundAvalancheEffectResult.Item1[i], threeRoundAvalancheEffectResult.Item2[i]);
                         }
                         break;
                     }
                 case 1:
                     {
-                        Series series = chart.Series.Add("Avalance");
+                        Series series = chart.Series.Add("Avalanche");
                         series.ChartType = SeriesChartType.Line;
+                        Series series1 = chart.Series.Add("Avalanche random");
+                        series1.ChartType = SeriesChartType.Line;
 
                         (int[], int[]) defaultConstantsAvalancheEffectResult = MD4Tester.AvalancheEffectTest();
                         (int[], int[]) randomConstantsAvalancheEffectResult = MD4Tester.AvalancheEffectTest(true, true,
@@ -90,6 +94,7 @@ namespace CryptoLab4
                         for (int i = 0; i < defaultConstantsAvalancheEffectResult.Item1.Length; i++)
                         {
                             series.Points.AddXY(defaultConstantsAvalancheEffectResult.Item1[i], defaultConstantsAvalancheEffectResult.Item2[i]);
+                            series1.Points.AddXY(randomConstantsAvalancheEffectResult.Item1[i], randomConstantsAvalancheEffectResult.Item2[i]);
                         }
                         break;
                     }
@@ -102,9 +107,11 @@ namespace CryptoLab4
                         (int[] k, (string, string)[] collisions, string[] collisionHashes, int[] N)
                             = MD4Tester.CollisionsTest(messageLengthInBits);
 
-                        for (int i = 0; i < k.Length; i++)
+                        Dictionary<int, double> result = Average(N);
+
+                        foreach (var i in result)
                         {
-                            series.Points.AddXY(k[i], N[i]);
+                            series.Points.AddXY(i.Key, i.Value);
                         }
 
                         break;
@@ -116,9 +123,11 @@ namespace CryptoLab4
                         string prototype = "random text";
                         (int[] k, string[] prototypes, int[] N) = MD4Tester.PrototypesTest(prototype);
 
-                        for (int i = 0; i < 10; i++)
+                        Dictionary<int, double> result = Average(N);
+
+                        foreach (var i in result)
                         {
-                            series.Points.AddXY(k[i], N[i]);
+                            series.Points.AddXY(i.Key, i.Value);
                         }
 
                         break;
@@ -144,17 +153,35 @@ namespace CryptoLab4
         {
             ((string, string) collision, string hash, int numGeneratedStrings)
                 = MD4Tester.FindCollision((int)messageLengthNumericUpDown.Value, (int)hashLengthNumericUpDown.Value);
-            ioRichTextBox.Clear();
-            ioRichTextBox.Text += $"------------------\ncollision\n------------------\n{collision.Item1}\n\n{collision.Item2}\n\n" +
+            outputRichTextBox.Clear();
+            outputRichTextBox.Text += $"------------------\ncollision\n------------------\n{collision.Item1}\n\n{collision.Item2}\n\n" +
                 $"------------------\nhash\n------------------\n{hash}\n\ngenerated strings: {numGeneratedStrings}";
         }
 
         private void findPrototypeButton_Click(object sender, EventArgs e)
         {
+            outputRichTextBox.Clear();
             (string prototype, string hash, int numGeneratedStrings)
-                = MD4Tester.FindPrototype(ioRichTextBox.Text, (int)hashLengthNumericUpDown.Value);
-            ioRichTextBox.Text += $"\n\n------------------\nprototype\n------------------\n{prototype}\n\n" +
+                = MD4Tester.FindPrototype(inputRichTextBox.Text, (int)hashLengthNumericUpDown.Value);
+            outputRichTextBox.Text += $"\n\n------------------\nprototype\n------------------\n{prototype}\n\n" +
                 $"------------------\nhash\n------------------\n{hash}\n\ngenerated strings: {numGeneratedStrings}";
+        }
+
+        private Dictionary<int, double> Average(int[] source, int numSamplesToAvg = 4)
+        {
+            Dictionary<int, double> result = new Dictionary<int, double>();
+            int mid = 0;
+            for (int k = 0; k < source.Length; k++)
+            {
+                mid += source[k];
+                if (k % numSamplesToAvg == 0)
+                {
+                    result[k + numSamplesToAvg] = mid / numSamplesToAvg;
+                    mid = 0;
+                }
+            }
+
+            return result;
         }
     }
 }

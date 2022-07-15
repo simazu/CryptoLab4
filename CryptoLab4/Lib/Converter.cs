@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Collections;
+﻿using System.Collections;
 using System.IO;
 
 namespace CryptoLab4.Lib
@@ -70,16 +65,12 @@ namespace CryptoLab4.Lib
         public static byte[] FileToBytes(string fileName)
         {
             using FileStream fileStream = new FileStream(fileName, FileMode.Open, FileAccess.Read);
-            // Read the source file into a byte array.
             byte[] bytes = new byte[fileStream.Length];
             int numBytesToRead = (int)fileStream.Length;
             int numBytesRead = 0;
             while (numBytesToRead > 0)
             {
-                // Read may return anything from 0 to numBytesToRead.
                 int n = fileStream.Read(bytes, numBytesRead, numBytesToRead);
-
-                // Break when the end of the file is reached.
                 if (n == 0)
                     break;
 
