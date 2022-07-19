@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Drawing;
+using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Windows.Forms.DataVisualization.Charting;
 
@@ -50,7 +51,7 @@ namespace CryptoLab4
             this.chart.Text = "chart1";
         }
 
-        private void plotButton_Click(object sender, EventArgs e)
+        private async void plotButton_Click(object sender, EventArgs e)
         {
             chart.Series.Clear();
 
@@ -58,6 +59,7 @@ namespace CryptoLab4
             {
                 case 0:
                     {
+                        StatusLabel.Text = "Calculation in progress";
                         Series series = chart.Series.Add("Avalanche one round");
                         series.ChartType = SeriesChartType.Line;
                         Series series1 = chart.Series.Add("Avalanche tho rounds");
@@ -67,9 +69,9 @@ namespace CryptoLab4
 
                         series.ChartType = SeriesChartType.Line;
 
-                        (int[], int[]) oneRoundAvalancheEffectResult = MD4Tester.AvalancheEffectTest(false, false);
-                        (int[], int[]) twoRoundAvalancheEffectResult = MD4Tester.AvalancheEffectTest(true, false);
-                        (int[], int[]) threeRoundAvalancheEffectResult = MD4Tester.AvalancheEffectTest();
+                        (int[], int[]) oneRoundAvalancheEffectResult = await Task.Run(() => MD4Tester.AvalancheEffectTest(false, false));
+                        (int[], int[]) twoRoundAvalancheEffectResult = await Task.Run(() => MD4Tester.AvalancheEffectTest(true, false));
+                        (int[], int[]) threeRoundAvalancheEffectResult = await Task.Run(() => MD4Tester.AvalancheEffectTest());
 
 
                         for (int i = 0; i < oneRoundAvalancheEffectResult.Item1.Length; i++)
@@ -78,34 +80,38 @@ namespace CryptoLab4
                             series1.Points.AddXY(twoRoundAvalancheEffectResult.Item1[i], twoRoundAvalancheEffectResult.Item2[i]);
                             series2.Points.AddXY(threeRoundAvalancheEffectResult.Item1[i], threeRoundAvalancheEffectResult.Item2[i]);
                         }
+                        StatusLabel.Text = "";
                         break;
                     }
                 case 1:
                     {
+                        StatusLabel.Text = "Calculation in progress";
                         Series series = chart.Series.Add("Avalanche");
                         series.ChartType = SeriesChartType.Line;
                         Series series1 = chart.Series.Add("Avalanche random");
                         series1.ChartType = SeriesChartType.Line;
 
-                        (int[], int[]) defaultConstantsAvalancheEffectResult = MD4Tester.AvalancheEffectTest();
-                        (int[], int[]) randomConstantsAvalancheEffectResult = MD4Tester.AvalancheEffectTest(true, true,
-                            0xaaaaaaaa, 0xaaaaaaaa, 0xaaaaaaaa, 0xaaaaaaaa);
+                        (int[], int[]) defaultConstantsAvalancheEffectResult = await Task.Run(() => MD4Tester.AvalancheEffectTest());
+                        (int[], int[]) randomConstantsAvalancheEffectResult = await Task.Run(() => MD4Tester.AvalancheEffectTest(true, true,
+                            0xaaaaaaaa, 0xaaaaaaaa, 0xaaaaaaaa, 0xaaaaaaaa));
 
                         for (int i = 0; i < defaultConstantsAvalancheEffectResult.Item1.Length; i++)
                         {
                             series.Points.AddXY(defaultConstantsAvalancheEffectResult.Item1[i], defaultConstantsAvalancheEffectResult.Item2[i]);
                             series1.Points.AddXY(randomConstantsAvalancheEffectResult.Item1[i], randomConstantsAvalancheEffectResult.Item2[i]);
                         }
+                        StatusLabel.Text = "";
                         break;
                     }
                 case 2:
                     {
+                        StatusLabel.Text = "Calculation in progress";
                         Series series = chart.Series.Add("Collision");
                         series.ChartType = SeriesChartType.Line;
 
                         int messageLengthInBits = 80;
                         (int[] k, (string, string)[] collisions, string[] collisionHashes, int[] N)
-                            = MD4Tester.CollisionsTest(messageLengthInBits);
+                            = await Task.Run(() => MD4Tester.CollisionsTest(messageLengthInBits));
 
                         Dictionary<int, double> result = Average(N);
 
@@ -113,15 +119,16 @@ namespace CryptoLab4
                         {
                             series.Points.AddXY(i.Key, i.Value);
                         }
-
+                        StatusLabel.Text = "";
                         break;
                     }
                 case 3:
                     {
+                        StatusLabel.Text = "Calculation in progress";
                         Series series = chart.Series.Add("Prototype");
                         series.ChartType = SeriesChartType.Line;
                         string prototype = "random text";
-                        (int[] k, string[] prototypes, int[] N) = MD4Tester.PrototypesTest(prototype);
+                        (int[] k, string[] prototypes, int[] N) = await Task.Run(() => MD4Tester.PrototypesTest(prototype));
 
                         Dictionary<int, double> result = Average(N);
 
@@ -129,21 +136,22 @@ namespace CryptoLab4
                         {
                             series.Points.AddXY(i.Key, i.Value);
                         }
-
+                        StatusLabel.Text = "";
                         break;
                     }
                 case 4:
                     {
+                        StatusLabel.Text = "Calculation in progress";
                         Series series = chart.Series.Add("Time");
                         series.ChartType = SeriesChartType.Line;
 
-                        (int[] lengths, int[] hashingTimes) = MD4Tester.HashingTimeFromMessageLength();
+                        (int[] lengths, int[] hashingTimes) = await Task.Run(() => MD4Tester.HashingTimeFromMessageLength());
 
                         for (int i = 0; i < lengths.Length; i++)
                         {
                             series.Points.AddXY(lengths[i], hashingTimes[i]);
                         }
-
+                        StatusLabel.Text = "";
                         break;
                     }
             }

@@ -47,6 +47,7 @@ namespace CryptoLab4
             this.plotButton = new System.Windows.Forms.Button();
             this.settingsLabel = new System.Windows.Forms.Label();
             this.panel1 = new System.Windows.Forms.Panel();
+            this.StatusLabel = new System.Windows.Forms.Label();
             this.sequencePanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.messageLengthNumericUpDown)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.hashLengthNumericUpDown)).BeginInit();
@@ -236,6 +237,7 @@ namespace CryptoLab4
             // panel1
             // 
             this.panel1.BackColor = System.Drawing.Color.Gainsboro;
+            this.panel1.Controls.Add(this.StatusLabel);
             this.panel1.Controls.Add(this.chartComboBox);
             this.panel1.Controls.Add(this.settingsLabel);
             this.panel1.Controls.Add(this.plotButton);
@@ -244,6 +246,14 @@ namespace CryptoLab4
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(1052, 579);
             this.panel1.TabIndex = 2;
+            // 
+            // StatusLabel
+            // 
+            this.StatusLabel.AutoSize = true;
+            this.StatusLabel.Location = new System.Drawing.Point(335, 555);
+            this.StatusLabel.Name = "StatusLabel";
+            this.StatusLabel.Size = new System.Drawing.Size(0, 15);
+            this.StatusLabel.TabIndex = 7;
             // 
             // MainForm
             // 
@@ -285,6 +295,7 @@ namespace CryptoLab4
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.RichTextBox inputRichTextBox;
         private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.Label StatusLabel;
     }
 }
 
